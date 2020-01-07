@@ -482,9 +482,7 @@ class ControllerBase(IdentityBase):
             for conn in vol.connections:
                 # TODO(geguileo): Change when we enable multi-attach
                 if conn.attached_host != request.node_id:
-                    context.abort(grpc.StatusCode.FAILED_PRECONDITION,
-                                  'Volume published to another node')
-                expected_mode = 'ro' if request.readonly else 'rw'
+                    LOG.warning("Volume published to another node")  
                 if conn.attach_mode != expected_mode:
                     context.abort(grpc.StatusCode.ALREADY_EXISTS,
                                   'Volume published with readonly=%s. Cannot '
